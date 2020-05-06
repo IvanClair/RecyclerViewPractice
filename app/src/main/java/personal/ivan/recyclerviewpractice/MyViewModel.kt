@@ -77,12 +77,15 @@ class MyViewModel : ViewModel() {
                                     }
                                 }
                                 .toMutableList()
+
                         } else {
+                            // expand
                             val filteredOriginList =
                                 mOriginList.filter { it.viewType != VhModel.VIEW_TYPE_HEADER && it.headerId == headerModel.headerId }
                             val position =
                                 displayList.indexOfFirst { it.viewType == VhModel.VIEW_TYPE_HEADER && it.headerId == headerModel.headerId }
-                            displayList.toMutableList()
+                            displayList
+                                .toMutableList()
                                 .apply { addAll(position + 1, filteredOriginList) }
                         }
 
