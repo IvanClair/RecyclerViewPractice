@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="personal.ivan.recyclerviewpractice.VhModel.VhHeaderModel" />
+
+        <variable
+            name="viewModel"
+            type="personal.ivan.recyclerviewpractice.MyViewModel" />
+    </data>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/black"
+        android:onClick="@{(v) -> viewModel.headerOnClick(model)}"
+        android:padding="16dp"
+        android:text="@{model.text}"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        tools:text="Header 1" />
+</layout>
