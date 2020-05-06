@@ -22,8 +22,9 @@ class MyAdapter(private val mViewModel: MyViewModel) :
             DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
                 when (viewType) {
+                    VhModel.VIEW_TYPE_HEADER -> R.layout.vh_header
                     VhModel.VIEW_TYPE_CHILD -> R.layout.vh_child
-                    else -> R.layout.vh_header
+                    else -> R.layout.vh_close
                 },
                 parent,
                 false

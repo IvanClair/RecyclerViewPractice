@@ -8,11 +8,39 @@ class MyViewModel : ViewModel() {
     // Origin Data List
     private val mOriginList =
         mutableListOf<VhModel>().apply {
-            repeat(10) { headerNumber ->
-                add(VhModel.VhHeaderModel(number = headerNumber))
-                repeat(3) { childNumber ->
-                    add(VhModel.VhChildModel(headId = headerNumber, number = childNumber))
+            repeat(10) { headerId ->
+
+                // header
+                add(
+                    VhModel(
+                        viewType = VhModel.VIEW_TYPE_HEADER,
+                        headerId = headerId,
+                        text = "Header $headerId",
+                        expand = false
+                    )
+                )
+
+                // child
+                repeat(20) { childNumber ->
+                    add(
+                        VhModel(
+                            viewType = VhModel.VIEW_TYPE_CHILD,
+                            headerId = headerId,
+                            text = "child $childNumber",
+                            expand = null
+                        )
+                    )
                 }
+
+                // close
+                add(
+                    VhModel(
+                        viewType = VhModel.VIEW_TYPE_CLOSE,
+                        headerId = headerId,
+                        text = null,
+                        expand = null
+                    )
+                )
             }
         }
 
@@ -31,34 +59,36 @@ class MyViewModel : ViewModel() {
     /* ------------------------------ UI Event */
 
     /**
-     * Head
+     * Head clicked
      */
-    fun headerOnClick(model: VhModel.VhHeaderModel) {
-        val display = displayDataList.value
-        if (display != null) {
-            if (model.expand) {
-                val newList =
-                    display
-                        .filter {
-                            when (it.viewType) {
-                                VhModel.VIEW_TYPE_HEADER -> true
-                                else -> (it as VhModel.VhChildModel).headId != model.headId
-                            }
+    fun headerOnClick(model: VhModel) {
+        displayDataList.value?.also { displayList ->
+            mOriginList
+                .find { it.viewType == VhModel.VIEW_TYPE_HEADER && it.headerId == model.headerId }
+                ?.also { headerModel ->
+                    val newList =
+                        if (headerModel.expand == true) {
+                            // collapse
+                            displayList
+                                .filter {
+                                    when (it.viewType) {
+                                        VhModel.VIEW_TYPE_HEADER -> true
+                                        else -> it.headerId != headerModel.headerId
+                                    }
+                                }
+                                .toMutableList()
+                        } else {
+                            val filteredOriginList =
+                                mOriginList.filter { it.viewType != VhModel.VIEW_TYPE_HEADER && it.headerId == headerModel.headerId }
+                            val position =
+                                displayList.indexOfFirst { it.viewType == VhModel.VIEW_TYPE_HEADER && it.headerId == headerModel.headerId }
+                            displayList.toMutableList()
+                                .apply { addAll(position + 1, filteredOriginList) }
                         }
-                        .toMutableList()
-                displayDataList.value = newList
 
-            } else {
-                val newList =
-                    mOriginList.filter { it.viewType == VhModel.VIEW_TYPE_CHILD && (it as VhModel.VhChildModel).headId == model.headId }
-                val position =
-                    display.indexOfFirst { it.viewType == VhModel.VIEW_TYPE_HEADER && (it as VhModel.VhHeaderModel).headId == model.headId }
-                val clone = display.toMutableList()
-                clone.addAll(position + 1, newList)
-                displayDataList.value = clone
-            }
-
-            model.expand = !model.expand
+                    displayDataList.value = newList
+                    headerModel.expand = !headerModel.expand!!
+                }
         }
     }
 }

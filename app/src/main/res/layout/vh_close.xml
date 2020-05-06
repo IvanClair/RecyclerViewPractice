@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -16,12 +14,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/black"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/holo_blue_light"
         android:onClick="@{(v) -> viewModel.headerOnClick(model)}"
-        android:padding="16dp"
-        android:text="@{model.text}"
-        android:textColor="@android:color/white"
-        android:textSize="24sp"
-        tools:text="Header 1" />
+        android:padding="8dp"
+        android:text="@string/app_name"
+        android:textSize="18sp" />
 </layout>
