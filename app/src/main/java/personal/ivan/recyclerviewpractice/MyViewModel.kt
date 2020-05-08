@@ -58,6 +58,16 @@ class MyViewModel : ViewModel() {
 
     /* ------------------------------ UI Event */
 
+    fun test() {
+        displayDataList.value?.also {
+            val newList = it.toMutableList()
+            val temp = newList[2]
+            newList[2] = newList[0]
+            newList[0] = temp
+            displayDataList.value = newList
+        }
+    }
+
     /**
      * Head clicked
      */

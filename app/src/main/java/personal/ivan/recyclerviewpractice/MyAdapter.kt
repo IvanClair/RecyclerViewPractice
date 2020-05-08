@@ -7,9 +7,23 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import java.util.*
 
 class MyAdapter(private val mViewModel: MyViewModel) :
     ListAdapter<VhModel, MyAdapter.MyViewHolder>(DiffCallback()) {
+
+    /* ------------------------------ Public Function */
+
+    fun move(
+        from: Int,
+        to: Int
+    ) {
+        mViewModel.displayDataList.value?.also {
+            val newList = it.toMutableList()
+            Collections.swap(newList, from, to)
+            mViewModel.displayDataList.value = newList
+        }
+    }
 
     /* ------------------------------ Override */
 
